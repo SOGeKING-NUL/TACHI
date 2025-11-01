@@ -39,7 +39,7 @@ export default function AppLayout({ children, isLanding }: LayoutProps) {
               <h3 className="text-xl font-black uppercase mb-4">NAVIGATE</h3>
               <ul className="space-y-2 font-bold">
                 <li>
-                  <Link href="/work" className="hover:text-yellow-400">
+                  <Link href="/live-event" className="hover:text-yellow-400">
                     LIVE EVENTS
                   </Link>
                 </li>

@@ -4,7 +4,7 @@ import { Wallet } from "lucide-react";
 
 export default function AppHeader() {
     return (
-        <header className="border-b-4 border-black rounded-b-3xl bg-yellow-400 p-4 sticky top-0 z-50">
+        <header className="border-b-4 border-black  bg-yellow-400 p-4 sticky top-0 z-50">
             <div className="mx-auto max-w-6xl flex items-center justify-between">
                 <Link
                     href="/"
@@ -14,7 +14,7 @@ export default function AppHeader() {
                     <span>BETTORS</span>
                 </Link>
                 <nav className="hidden md:flex items-center gap-8">
-                    <Link href="/work" className="font-bold uppercase text-sm hover:underline decoration-4">
+                    <Link href="/live-event" className="font-bold uppercase text-sm hover:underline decoration-4">
                         LIVE EVENTS
                     </Link>
                     <Link href="/leaderboard" className="font-bold uppercase text-sm hover:underline decoration-4">
