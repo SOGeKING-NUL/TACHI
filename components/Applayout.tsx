@@ -1,8 +1,11 @@
+"use client"
+
 import type React from "react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import LandingHeader from "@/components/LandingHeader"
 import AppHeader from "@/components/AppHeader"
+import WalletUserProvider from "@/components/WalletUserProvider"
 
 interface LayoutProps {
   children: React.ReactNode
@@ -11,13 +14,14 @@ interface LayoutProps {
 
 export default function AppLayout({ children, isLanding }: LayoutProps) {
   return (
-    <div className="min-h-screen bg-white">
-      {/* Header */}
-      {
-        isLanding ? <LandingHeader /> : <AppHeader />
-      }
+    <WalletUserProvider>
+      <div className="min-h-screen bg-white">
+        {/* Header */}
+        {
+          isLanding ? <LandingHeader /> : <AppHeader />
+        }
 
-      {children}
+        {children}
 
       {/* Footer */}
       <footer className="bg-black text-white border-t-4 border-white py-12">
@@ -96,6 +100,7 @@ export default function AppLayout({ children, isLanding }: LayoutProps) {
           </div>
         </div>
       </footer>
-    </div>
+      </div>
+    </WalletUserProvider>
   )
 }

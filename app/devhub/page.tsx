@@ -1,8 +1,9 @@
-import Layout from "../../components/layout"
+import AppLayout from "@/components/Applayout"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Code2, BookOpen, Zap, Github, FileText, Cpu } from "lucide-react"
 import Link from "next/link"
+import AppHeader from "@/components/AppHeader"
 
 const devResources = [
   {
@@ -106,32 +107,7 @@ const builders = [
 
 export default function DevHubPage() {
   return (
-    <Layout>
-      {/* Hero Section */}
-      <section className="bg-black text-white py-20">
-        <div className="mx-auto max-w-6xl px-4 text-center">
-          <h1 className="text-6xl md:text-8xl font-black uppercase mb-8">
-            DEVELOPER
-            <br />
-            <span className="text-cyan-400">HUB</span>
-          </h1>
-          <p className="text-xl font-bold max-w-3xl mx-auto mb-8">
-            BUILD THE FUTURE OF PREDICTION MARKETS ON MONAD. APIs. SDKs. DOCS. EVERYTHING YOU NEED.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="#">
-              <Button className="bg-pink-500 text-white border-4 border-white hover:bg-white hover:text-pink-500 font-black uppercase text-lg px-8 py-6 shadow-[8px_8px_0px_0px_rgba(255,255,255,1)]">
-                VIEW API DOCS
-              </Button>
-            </Link>
-            <Link href="#">
-              <Button className="border-4 border-white bg-transparent text-white hover:bg-white hover:text-black font-black uppercase text-lg px-8 py-6 shadow-[8px_8px_0px_0px_rgba(255,255,255,1)]">
-                GITHUB REPO
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </section>
+    <AppLayout>
 
       {/* Quick Resources */}
       <section className="bg-white py-20">
@@ -272,6 +248,6 @@ export default function DevHubPage() {
           </Link>
         </div>
       </section>
-    </Layout>
+    </AppLayout>
   )
 }
