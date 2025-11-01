@@ -1,8 +1,6 @@
+import { tachiFactoryABI } from "@/tachi_contracts/contract_abis/tachi_factory_abi"
 import { ethers, Contract, Signer, providers } from "ethers"
 
-// ============================================================================
-// TYPE DEFINITIONS - Matching Solidity Contract Structures
-// ============================================================================
 
 /**
  * Market data structure matching the Solidity Market struct
@@ -59,53 +57,12 @@ export interface MarketStatus {
  * Contract constants
  */
 export const CONTRACT_CONSTANTS = {
-  MIN_BET_AMOUNT: ethers.utils.parseEther("0.001"), // 0.001 ether
+  MIN_BET_AMOUNT: ethers.utils.parseEther("0.1"), 
   MAX_BET_AMOUNT: ethers.utils.parseEther("100"), // 100 ether
   MAX_DURATION: 3600, // 1 hour in seconds
 } as const
 
-// ============================================================================
-// CONTRACT ABI - All contract functions and events
-// ============================================================================
 
-/**
- * Contract ABI - This should be replaced with the actual compiled ABI
- * For now, we'll define the interface manually
- */
-export const TACHI_FACTORY_ABI = [
-  // Events
-  "event MarketCreated(uint256 indexed marketId, bytes32 questionHash, string question, uint256 closeTime, uint256 durationSeconds, uint256 betAmount)",
-  "event BetPlaced(uint256 indexed marketId, address indexed user, bool prediction, uint256 amount)",
-  "event BettingClosed(uint256 indexed marketId)",
-  "event MarketResolved(uint256 indexed marketId, bool outcome)",
-  "event WinningsClaimed(uint256 indexed marketId, address indexed user, uint256 amount)",
-  "event UserStatsUpdated(address indexed user, uint256 totalBets, uint256 wonBets, uint256 totalWinnings, uint256 netProfit)",
-  "event PaymentFailed(address indexed user, uint256 amount)",
-
-  // Write functions
-  "function createMarket(string calldata question, uint256 durationSeconds, uint256 betAmount) external returns (uint256)",
-  "function closeBetting(uint256 marketId) external",
-  "function resolveMarket(uint256 marketId, bool outcome) external",
-  "function addHouseFunds(uint256 marketId) external payable",
-  "function placeBet(uint256 marketId, bool prediction) external payable",
-  "function setOrganizer(address newOrganizer) external",
-
-  // View functions
-  "function getUserStats(address user) external view returns (uint256 totalBets, uint256 wonBets, uint256 lostBets, uint256 totalWinnings, uint256 netProfit, uint256 totalAmountBet, uint256 winRate)",
-  "function getAllParticipants() external view returns (address[] memory)",
-  "function getMarket(uint256 marketId) external view returns (bytes32 questionHash, uint256 closeTime, uint256 betAmount, uint256 yesPool, uint256 noPool, bool isClosed, bool resolved, bool outcome, uint256 participantCount)",
-  "function getUserBet(uint256 marketId, address user) external view returns (bool hasBet, bool prediction, uint256 amount, bool claimed, bool won)",
-  "function getMarketCount() external view returns (uint256)",
-  "function getMarketStatus(uint256 marketId) external view returns (uint256 secondsRemaining, bool isBettingOpen, bool isBettingClosed, bool isResolved, uint256 currentTime, uint256 closeTime)",
-  "function getCurrentTimestamp() external view returns (uint256)",
-  "function getContractBalance() external view returns (uint256)",
-  "function organizer() external view returns (address)",
-  "function markets(uint256) external view returns (bytes32 questionHash, uint256 closeTime, uint256 betAmount, uint256 yesPool, uint256 noPool, bool isClosed, bool resolved, bool outcome)",
-] as const
-
-// ============================================================================
-// CONTRACT WRAPPER CLASS
-// ============================================================================
 
 export class TachiContract {
   private contract: Contract
@@ -117,7 +74,7 @@ export class TachiContract {
    * @param signerOrProvider - Signer for write operations, or Provider for read-only
    */
   constructor(contractAddress: string, signerOrProvider: Signer | providers.Provider) {
-    this.contract = new ethers.Contract(contractAddress, TACHI_FACTORY_ABI, signerOrProvider)
+    this.contract = new ethers.Contract(contractAddress, tachiFactoryABI, signerOrProvider)
     this.signer = signerOrProvider instanceof Signer ? signerOrProvider : null
   }
 
@@ -127,10 +84,6 @@ export class TachiContract {
   getContract(): Contract {
     return this.contract
   }
-
-  // ============================================================================
-  // ORGANIZER FUNCTIONS (Write - Requires Signer)
-  // ============================================================================
 
   /**
    * Create a new betting market (Organizer only)
@@ -238,9 +191,6 @@ export class TachiContract {
     return receipt.transactionHash
   }
 
-  // ============================================================================
-  // USER FUNCTIONS (Write - Requires Signer)
-  // ============================================================================
 
   /**
    * Place a bet on a market
@@ -262,9 +212,6 @@ export class TachiContract {
     return receipt.transactionHash
   }
 
-  // ============================================================================
-  // VIEW FUNCTIONS (Read-only)
-  // ============================================================================
 
   /**
    * Get market data by ID
@@ -390,11 +337,26 @@ export class TachiContract {
   async getOrganizer(): Promise<string> {
     return await this.contract.organizer()
   }
+
+  /**
+   * Get minimum bet amount constant
+   * @returns Minimum bet amount in wei (as string)
+   */
+  async getMinBetAmount(): Promise<string> {
+    const amount = await this.contract.MIN_BET_AMOUNT()
+    return amount.toString()
+  }
+
+  /**
+   * Get maximum bet amount constant
+   * @returns Maximum bet amount in wei (as string)
+   */
+  async getMaxBetAmount(): Promise<string> {
+    const amount = await this.contract.MAX_BET_AMOUNT()
+    return amount.toString()
+  }
 }
 
-// ============================================================================
-// UTILITY FUNCTIONS
-// ============================================================================
 
 /**
  * Format wei amount to ether string
