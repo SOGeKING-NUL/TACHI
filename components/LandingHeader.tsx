@@ -1,6 +1,7 @@
+"use client"
+
 import Link from "next/link";
-import { Button } from "./ui/button";
-import { Wallet } from "lucide-react";
+import ConnectButton from "@/components/ConnectButton";
 
 export default function LandingHeader() {
     return (
@@ -14,11 +15,7 @@ export default function LandingHeader() {
                     <span>BETTORS</span>
                 </Link>
                 <div>
-                <appkit-button />
-                    {/* <Button className="bg-black text-white border-4 border-black hover:bg-white hover:text-black font-black uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                        CONNECT
-                    </Button> */}
-                    {/* <Wallet className="ml-2 h-5 w-5" /> */}
+                    <ConnectButton />
                 </div>
             </div>
         </header>
